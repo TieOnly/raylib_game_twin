@@ -31,6 +31,22 @@ void Game::Update()
 {
     const float dTime = ft.Mark();
 
+    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        Vec2 dir = Vec2{ (float)GetMouseX(), (float)GetMouseY() } - elf.GetPos();
+
+        if( dir == (Vec2){ 0.0f, 0.0f } )
+        {
+            dir = { 0.0f, 1.0f };
+        }
+        else
+        {
+            dir.Nomarlize();
+        }
+
+        bullets.emplace_back( Bullet{ elf.GetPos(), dir } );
+    }
+
     Vec2 dir = { 0, 0 };
     if(IsKeyDown(KEY_UP))
     {
@@ -51,6 +67,11 @@ void Game::Update()
     elf.SetDirection( dir );
     elf.Update( dTime );
 
+    for( Bullet& b : bullets )
+    {
+        b.Update( dTime );
+    }
+
     for(Poo& poo : poos)
     {
         const Vec2 delta = elf.GetPos() - poo.GetPos();
@@ -64,9 +85,23 @@ void Game::Update()
             poo.SetDirection( {0.0f, 0.0f} );
         }
         poo.Update( dTime );
+
+        const auto poo_hitbox = poo.GetHitBox();
         if( !elf.IsInvisible() && elf.GetHitBox().IsOverLapping( poo.GetHitBox() ) )
         {
             elf.ApplyEffect();
+        }
+        for( size_t i = 0u; i < bullets.size(); )
+        {
+            if( bullets[i].GetHitBox().IsOverLapping( poo_hitbox ) )
+            {
+                rayCpp::remove_element( bullets, i );
+                poo.ActivateEffect();
+            }
+            else
+            {
+                ++i;
+            }
         }
     }
 }
@@ -80,5 +115,10 @@ void Game::Draw()
     }
     rayCpp::DrawRectThin( elf.GetHitBox(), GREEN );
     elf.Draw();
-    // font.DrawText("From Chili\nwith love~", {GetMouseX(), GetMouseY()}, WHITE);
+    for( Bullet& b : bullets )
+    {
+        b.Draw();
+        rayCpp::DrawRectThin( b.GetHitBox(), SKYBLUE );
+    }
+    font.DrawText("From Chili with love~", {10, 10}, WHITE);
 }

@@ -7,7 +7,6 @@ class Poo
 {
 public: 
     Poo( const Vec2& pos );
-    void ProcessControl();
     void SetDirection( const Vec2& dir );
     void ActivateEffect();
     void Update( float dTime );
@@ -26,7 +25,7 @@ private:
 
     Sound stepSound;
     int nFramePerSound = 2;
-    static constexpr float effectTime = 0.1f;
+    static constexpr float effectTime = 0.2f;
     float effectCurrent = 0.0f;
     bool isEffect = false;
 };

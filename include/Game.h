@@ -6,6 +6,7 @@
 #include "Character.h"
 #include "FontC.h"
 #include "Poo.h"
+#include "Bullet.h"
 
 class Game
 {
@@ -25,4 +26,6 @@ private:
     Character elf = Character( {100, 100} );
     FontC font;
     std::vector<Poo> poos;
+
+    std::vector<Bullet> bullets;
 };

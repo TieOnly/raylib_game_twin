@@ -8,10 +8,6 @@ Poo::Poo( const Vec2& pos )
 {
     
 }
-void Poo::ProcessControl()
-{
-
-}
 void Poo::SetDirection( const Vec2& dir )
 {
     vel = dir * speed;
@@ -45,5 +41,12 @@ void Poo::Draw() const
 {
     const Vec2 draw_pos = pos + draw_offset;
 
-    rayCpp::DrawSprite(sprite, draw_pos, RectI{{0, 0}, sprite.width, sprite.height });
+    if(isEffect)
+    {
+        rayCpp::DrawSprite(sprite, draw_pos, RectI{{0, 0}, sprite.width, sprite.height }, RED);
+    }
+    else
+    {
+        rayCpp::DrawSprite(sprite, draw_pos, RectI{{0, 0}, sprite.width, sprite.height });
+    }
 }

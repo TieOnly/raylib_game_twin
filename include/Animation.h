@@ -21,11 +21,11 @@ public:
         Rectangle srcRect = frames[iCurFrame].rayRect();
         Rectangle destRect = dest.rayRect();
         effect(
-            sprite, pos, srcRect, destRect
+            *sprite, pos, srcRect, destRect
         );
     }
 private:
-    const Texture2D& sprite;
+    const Texture2D* sprite;
     std::vector<RectI> frames;
     int iCurFrame = 0;
     float curFrameTime = 0.0f;
