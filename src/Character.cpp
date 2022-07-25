@@ -7,82 +7,74 @@ Character::Character( const Vec2& pos )
     pos( pos ),
     stepSound( LoadSound("../assets/audio/step.mp3") )
 {
-    for(int i = 0; i < (int)Sequence::StandingLeft; i++)
+    for(int i = 0; i < (int)AnimationSequence::StandingLeft; i++)
     {
         animations.emplace_back( Animation( 90, 90*i, 90, 90, 4, sprite, 0.16f ) );
     }
-    for(int i = (int)Sequence::StandingLeft; i < (int)Sequence::Count; i++)
+    for(int i = (int)AnimationSequence::StandingLeft; i < (int)AnimationSequence::Count; i++)
     {
-        animations.emplace_back( Animation( 0, 90*(i - (int)Sequence::StandingLeft), 90, 90, 1, sprite, 0.16f ) );
+        animations.emplace_back( Animation( 0, 90*(i - (int)AnimationSequence::StandingLeft), 90, 90, 1, sprite, 0.16f ) );
     }
-}
-void Character::ProcessControl()
-{
-
 }
 void Character::SetDirection( const Vec2& dir )
 {
     if( dir.x > 0)
     {
-        iCurSequence = Sequence::WalkingRight;
+        iCurAnimationSequence = AnimationSequence::WalkingRight;
     }
     else if ( dir.x < 0 )
     {
-        iCurSequence = Sequence::WalkingLeft;
+        iCurAnimationSequence = AnimationSequence::WalkingLeft;
     }
     else if ( dir.y > 0 )
     {
-        iCurSequence = Sequence::WalkingDown;
+        iCurAnimationSequence = AnimationSequence::WalkingDown;
     }
     else if ( dir.y < 0 )
     {
-        iCurSequence = Sequence::WalkingUp;
+        iCurAnimationSequence = AnimationSequence::WalkingUp;
     }
     else
     {
         if(vel.x > 0)
         {
-            iCurSequence = Sequence::StandingRight;
+            iCurAnimationSequence = AnimationSequence::StandingRight;
         }
         else if( vel.x < 0 )
         {
-            iCurSequence = Sequence::StandingLeft;
+            iCurAnimationSequence = AnimationSequence::StandingLeft;
         }
         else if( vel.y > 0 )
         {
-            iCurSequence = Sequence::StandingDown;
+            iCurAnimationSequence = AnimationSequence::StandingDown;
         }
         else if( vel.y < 0 )
         {
-            iCurSequence = Sequence::StandingUp;
+            iCurAnimationSequence = AnimationSequence::StandingUp;
         }
     }
     vel = dir * speed;
 }
-void Character::ActivateEffect()
+void Character::ApplyEffect()
 {
-    isEffect = true;
-    effectCurrent = 0.0f;
+    dec.Active();
+}
+bool Character::IsInvisible() const
+{
+    return dec.IsActive();
 }
 void Character::Update( float dTime )
 {
     pos += vel * dTime;
     if(vel != 0)
     {
-        animations[(int)iCurSequence].Update( dTime, stepSound, nFramePerSound );
+        animations[(int)iCurAnimationSequence].Update( dTime, stepSound, nFramePerSound );
     }
     else
     {
-        animations[(int)iCurSequence].Update( dTime );
+        animations[(int)iCurAnimationSequence].Update( dTime );
     }
-    if(isEffect)
-    {
-        effectCurrent += dTime;
-        if(effectCurrent >= effectTime)
-        {
-            isEffect = false;
-        }
-    }
+    dec.Update( dTime );
 }
 const Vec2& Character::GetPos()
 {
@@ -94,16 +86,60 @@ RectI Character::GetHitBox() const
 }
 void Character::Draw() const
 {
-    const Vec2 draw_pos = pos + draw_offset;
+    dec.Draw();
+}
 
-    if(isEffect)
+///////////////////////////////////////////////////////////////////////
+Character::DamegeEffectController::DamegeEffectController(Character& parent)
+    :
+    parent( parent )
+{}
+void Character::DamegeEffectController::Update( float dTime )
+{
+    if(active)
     {
-        SpriteEffects::Chroma e{ RED };
-        animations[(int)iCurSequence].Draw( draw_pos, e );
+        time += dTime;
+        if(time >= totalDuration)
+        {
+            active = false;
+        }
+    }
+}
+void Character::DamegeEffectController::Active()
+{
+    if(!active)
+    {
+        active = true;
+        time = 0.0f;
+    }
+}
+bool Character::DamegeEffectController::IsActive() const
+{
+    return active;
+}
+void Character::DamegeEffectController::Draw() const
+{
+    const Vec2 draw_pos = parent.pos + parent.draw_offset;
+
+    if(active)
+    {
+        if( time <= RedDuration )
+        {
+            SpriteEffects::Chroma e{ RED };
+            parent.animations[(int)parent.iCurAnimationSequence].Draw( draw_pos, e );
+        }
+        else
+        {
+            if( int(time / blinkHalfPeriod) % 2 != 0 )
+            {
+                SpriteEffects::Chroma e{ WHITE };
+                parent.animations[(int)parent.iCurAnimationSequence].Draw( draw_pos, e );
+            }
+        }
     }
     else
     {
         SpriteEffects::Chroma e{ WHITE };
-        animations[(int)iCurSequence].Draw( draw_pos, e );
+        parent.animations[(int)parent.iCurAnimationSequence].Draw( draw_pos, e );
     }
 }

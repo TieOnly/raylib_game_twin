@@ -6,7 +6,25 @@
 class Character
 {
 private:
-    enum class Sequence
+    class DamegeEffectController
+    {
+    public:
+        DamegeEffectController(Character& parent);
+        void Update( float dTime );
+        void Active();
+        bool IsActive() const;
+        void Draw() const;
+    private:
+        Character& parent;
+        float time;
+        bool active = false;
+        static constexpr float totalDuration = 1.5f;
+        static constexpr float RedDuration = 0.1f;
+        static constexpr float blinkHalfPeriod = 0.16f;
+    };
+
+private:
+    enum class AnimationSequence
     {
         WalkingLeft,
         WalkingRight,
@@ -20,9 +38,9 @@ private:
     };
 public: 
     Character( const Vec2& pos );
-    void ProcessControl();
     void SetDirection( const Vec2& dir );
-    void ActivateEffect();
+    void ApplyEffect();
+    bool IsInvisible() const;
     void Update( float dTime );
     const Vec2& GetPos();
     void Draw() const;
@@ -38,10 +56,9 @@ private:
     static constexpr int hhHitBox = 10;
 
     std::vector<Animation> animations;
-    Sequence iCurSequence = Sequence::StandingDown;
+    AnimationSequence iCurAnimationSequence = AnimationSequence::StandingDown;
     Sound stepSound;
     int nFramePerSound = 2;
-    static constexpr float effectTime = 0.1f;
-    float effectCurrent = 0.0f;
-    bool isEffect = false;
+
+    DamegeEffectController dec = { *this };
 };

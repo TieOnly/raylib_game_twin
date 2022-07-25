@@ -64,17 +64,21 @@ void Game::Update()
             poo.SetDirection( {0.0f, 0.0f} );
         }
         poo.Update( dTime );
+        if( !elf.IsInvisible() && elf.GetHitBox().IsOverLapping( poo.GetHitBox() ) )
+        {
+            elf.ApplyEffect();
+        }
     }
 }
 void Game::Draw()
 {
     ClearBackground(RAYWHITE);
-    elf.Draw();
     for( Poo& poo : poos )
     {
         poo.Draw();
         rayCpp::DrawRectThin( poo.GetHitBox(), RED );
     }
     rayCpp::DrawRectThin( elf.GetHitBox(), GREEN );
+    elf.Draw();
     // font.DrawText("From Chili\nwith love~", {GetMouseX(), GetMouseY()}, WHITE);
 }
