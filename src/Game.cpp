@@ -1,11 +1,12 @@
 #include "Game.h"
-#include "raylib.h"
 #include <iostream>
 #include <cmath>
 
 Game::Game(int fps)
     :
     rng( std::random_device()() ),
+    pooS( LoadTexture("../assets/img/poo.png") ),
+    bulletS( LoadTexture("../assets/img/bullet.png") ),
     font( "../assets/font/fontWhite.png" )
 {
     SetTargetFPS(fps);
@@ -14,7 +15,7 @@ Game::Game(int fps)
 
     for(int i = 0; i < 10; i++)
     {
-        poos.emplace_back( Vec2{xD( rng ), yD( rng )} );
+        poos.emplace_back( Poo{ pooS, Vec2{xD( rng ), yD( rng )}} );
     }
 
 }
@@ -53,7 +54,7 @@ void Game::Update()
         //const location spawn
         const Vec2 loca_offset = {0.0f, -20.0f};
 
-        bullets.emplace_back( Bullet{ elf.GetPos() + loca_offset, dir } );
+        bullets.emplace_back( Bullet{ bulletS, elf.GetPos() + loca_offset, dir } );
     }
 
     Vec2 dir = { 0, 0 };
@@ -76,11 +77,13 @@ void Game::Update()
     elf.SetDirection( dir );
     elf.Update( dTime );
 
+    //
     for( Bullet& b : bullets )
     {
         b.Update( dTime );
     }
 
+    //collision with bullets and elf
     for(Poo& poo : poos)
     {
         //move logic
@@ -134,8 +137,8 @@ void Game::Update()
         {
             if( bullets[i].GetHitBox().IsOverLapping( poo_hitbox ) )
             {
+                poo.ApplyDamege( bullets[i].GetDamege() );
                 rayCpp::remove_element( bullets, i );
-                poo.ActivateEffect();
             }
             else if( !bullets[i].GetHitBox().IsOverLapping( screenRect ) )
             {
@@ -146,6 +149,16 @@ void Game::Update()
                 ++i;
             }
         }
+    }
+    //remove poo if dead
+    for( size_t i = 0u; i < poos.size(); )
+    {
+        if(poos[i].IsDead())
+        {
+            rayCpp::remove_element( poos, i );
+            continue;
+        }
+        ++i;
     }
 }
 void Game::Draw()
@@ -163,5 +176,5 @@ void Game::Draw()
         b.Draw();
         // rayCpp::DrawRectThin( b.GetHitBox(), SKYBLUE );
     }
-    font.DrawText("From Chili with love~", {10, 10}, WHITE);
+    font.DrawText("From Chili with love~", {10, 10}, BLACK);
 }

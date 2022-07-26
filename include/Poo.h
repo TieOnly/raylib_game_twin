@@ -6,9 +6,12 @@
 class Poo
 {
 public: 
-    Poo( const Vec2& pos );
+    Poo( const Texture2D& sprite_in, const Vec2& pos );
+    Poo( const Poo& src );
+    Poo& operator = ( const Poo& src );
     void SetDirection( const Vec2& dir );
-    void ActivateEffect();
+    void ApplyDamege( const float damege );
+    bool IsDead() const;
     void Update( float dTime );
     const Vec2& GetPos();
     RectI GetHitBox() const;
@@ -28,4 +31,6 @@ private:
     static constexpr float effectTime = 0.2f;
     float effectCurrent = 0.0f;
     bool isEffect = false;
+
+    float hp = 100.0f;
 };

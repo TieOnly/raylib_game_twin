@@ -1,9 +1,9 @@
 #include "Bullet.h"
 #include "SpriteEffects.h"
 
-Bullet::Bullet( const Vec2& pos, const Vec2& dir)
+Bullet::Bullet( const Texture2D& spite_in, const Vec2& pos, const Vec2& dir )
     :
-    bullet_surf( LoadTexture("../assets/img/bullet.png") ),
+    bullet_surf( spite_in ),
     bullet_animation( 0, 0, 24, 24, 4, bullet_surf, 0.08f ),
     pos( pos ),
     vel( dir * speed )
@@ -40,4 +40,8 @@ const Vec2& Bullet::GetPos() const
 RectI Bullet::GetHitBox() const
 {
     return RectI::FromCenter( (Vei2)pos, hwHitBox, hhHitBox );
+}
+float Bullet::GetDamege() const
+{
+    return damege;
 }

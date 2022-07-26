@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <string>
 #include <random>
-#include "raylib.h"
+#include "raylibCpp.h"
 #include "FrameTime.h"
 #include "Character.h"
 #include "FontC.h"
@@ -25,6 +25,9 @@ private:
     FrameTime ft;
     const RectI screenRect = rayCpp::GetScreenRect();
     std::mt19937 rng;
+
+    Texture2D pooS;
+    Texture2D bulletS;
 
     Character elf = Character( {100, 100} );
     FontC font;
