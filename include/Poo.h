@@ -5,6 +5,15 @@
 
 class Poo
 {
+private:
+    enum class EffectState
+    {
+        Dead,
+        Dying,
+        Hurt,
+        Normal
+    };
+
 public: 
     Poo( const Texture2D& sprite_in, const Vec2& pos );
     Poo( const Poo& src );
@@ -28,9 +37,13 @@ private:
 
     Sound stepSound;
     int nFramePerSound = 2;
-    static constexpr float effectTime = 0.2f;
-    float effectCurrent = 0.0f;
-    bool isEffect = false;
 
-    float hp = 100.0f;
+    int hp = 100;
+    EffectState effState = EffectState::Normal;
+    EffectState lastState = effState;
+    bool isChangeStated = false;
+    static constexpr float duraHurtEff = 0.2f;
+    static constexpr float duraDyingEff = 1.0f;
+    float effectCurrent = 0.0f;
+
 };

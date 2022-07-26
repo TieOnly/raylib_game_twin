@@ -1,5 +1,6 @@
 #include "Poo.h"
 #include "SpriteEffects.h"
+#include <iostream>
 
 Poo::Poo( const Texture2D& sprite_in, const Vec2& pos )
     :
@@ -17,34 +18,58 @@ Poo& Poo::operator = ( const Poo& src )
 {
     pos = src.pos;
     hp = src.hp;
-    isEffect = src.isEffect;
+    effState = src.effState;
     return *this;
 }
 void Poo::SetDirection( const Vec2& dir )
 {
-    vel = dir * speed;
+    if(effState != EffectState::Dying)
+        vel = dir * speed;
+    else
+        vel = { 0.0f, 0.0f };
 }
 void Poo::ApplyDamege( const float damege )
 {
-    hp -= damege;
-    isEffect = true;
-    effectCurrent = 0.0f;
+    hp -= (int)damege;
+
+    if(hp <= 0)
+        effState = EffectState::Dying;
+    else
+        effState = EffectState::Hurt;
 }
 bool Poo::IsDead() const
 {
-    return hp <= 0.0f;
+    return effState == EffectState::Dead;
 }
 void Poo::Update( float dTime )
 {
     pos += vel * dTime;
-    if(isEffect)
+
+    if(effState != lastState)
     {
-        effectCurrent += dTime;
-        if(effectCurrent >= effectTime)
+        effectCurrent = 0.0f;
+    }
+    else
+    {
+        if(effState != EffectState::Normal) effectCurrent += dTime;
+    }
+
+    if(effState == EffectState::Hurt)     // Be Hit
+    {
+        if(effectCurrent > duraHurtEff)
         {
-            isEffect = false;
+            effState = EffectState::Normal;
         }
     }
+    else if( effState == EffectState::Dying )        // Be Die
+    {
+        if(effectCurrent > duraDyingEff)
+        {
+            effState = EffectState::Dead;
+        }
+    }
+
+    lastState = effState;
 }
 const Vec2& Poo::GetPos()
 {
@@ -56,17 +81,22 @@ RectI Poo::GetHitBox() const
 }
 void Poo::Draw() const
 {
+    //Process before switch
     const Vec2 draw_pos = pos + draw_offset;
+    unsigned char a = 255 - (effectCurrent / duraDyingEff) * 255;   // chroma Effect Dying
 
-    if(!IsDead())
+    switch (effState)
     {
-        if(isEffect)
-        {
-            rayCpp::DrawSprite(sprite, draw_pos, RectI{{0, 0}, sprite.width, sprite.height }, RED);
-        }
-        else
-        {
-            rayCpp::DrawSprite(sprite, draw_pos, RectI{{0, 0}, sprite.width, sprite.height });
-        }
+    case Poo::EffectState::Normal:
+        rayCpp::DrawSprite(sprite, draw_pos, RectI{{0, 0}, sprite.width, sprite.height });
+        break;
+    case Poo::EffectState::Hurt:
+        rayCpp::DrawSprite(sprite, draw_pos, RectI{{0, 0}, sprite.width, sprite.height }, RED);
+        break;
+    case Poo::EffectState::Dying:
+        rayCpp::DrawSprite(sprite, draw_pos, RectI{{0, 0}, sprite.width, sprite.height }, { 255, 255, 255, a });
+        break;
+    default:
+        break;
     }
 }

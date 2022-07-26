@@ -13,7 +13,7 @@ Game::Game(int fps)
     std::uniform_real_distribution<float> xD( 0, (float)settings::screenW );
     std::uniform_real_distribution<float> yD( 0, (float)settings::screenH );
 
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 20; i++)
     {
         poos.emplace_back( Poo{ pooS, Vec2{xD( rng ), yD( rng )}} );
     }
