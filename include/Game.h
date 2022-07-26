@@ -1,6 +1,7 @@
 #pragma once
 #include <assert.h>
 #include <string>
+#include <random>
 #include "raylib.h"
 #include "FrameTime.h"
 #include "Character.h"
@@ -22,6 +23,8 @@ private:
     void Draw();
 
     FrameTime ft;
+    const RectI screenRect = rayCpp::GetScreenRect();
+    std::mt19937 rng;
 
     Character elf = Character( {100, 100} );
     FontC font;

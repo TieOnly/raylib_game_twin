@@ -26,4 +26,8 @@ void rayCpp::DrawRectThin(const RectI& rect, const Color& color)
     Rectangle rayRect = rect.rayRect();
     DrawRectangleLinesEx( rayRect, 2.0f, color );
 }
-
+RectI rayCpp::GetScreenRect(  )
+{
+    // return RectI{ {0, 0}, GetScreenWidth(), GetScreenHeight() };
+    return RectI{ {0, 0}, settings::screenW, settings::screenH };
+}

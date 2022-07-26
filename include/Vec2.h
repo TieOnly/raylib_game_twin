@@ -79,6 +79,18 @@ public:
     {
         return (*this = *this * rhs);
     }
+    constexpr Vec2_ operator / (const Vec2_& rhs) const
+    {
+        return {x / rhs.x, y / rhs.y};
+    }
+    constexpr Vec2_ operator / (const T& rhs) const
+    {
+        return {x / rhs, y / rhs};
+    }
+    constexpr Vec2_& operator /= (const Vec2_& rhs) 
+    {
+        return (*this = *this / rhs);
+    }
     constexpr T GetLengthSq() const
     {
         return (T)(x * x + y * y);
