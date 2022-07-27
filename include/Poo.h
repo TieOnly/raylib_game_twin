@@ -18,6 +18,7 @@ public:
     Poo( const Poo& src );
     Poo& operator = ( const Poo& src );
     void SetDirection( const Vec2& dir );
+    void AdjustPos(float dTime);
     void ApplyDamege( const float damege );
     bool IsDead() const;
     void Update( float dTime );

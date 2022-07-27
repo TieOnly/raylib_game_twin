@@ -5,15 +5,14 @@
 Game::Game(int fps)
     :
     rng( std::random_device()() ),
-    groundS( LoadTexture("../assets/img/ground.png") ),
     pooS( LoadTexture("../assets/img/poo.png") ),
     bulletS( LoadTexture("../assets/img/bullet2.png") ),
     font( "../assets/font/fontWhite.png" ),
-    backGroud( groundS, {0.0f, 0.0f} )
+    backGround( {0.0f, 0.0f}, settings::lay1, settings::lay2 )
 {
     SetTargetFPS(fps);
-    std::uniform_real_distribution<float> xD( 0, (float)settings::screenW );
-    std::uniform_real_distribution<float> yD( 0, (float)settings::screenH );
+    std::uniform_real_distribution<float> xD( 80.0f, (float)settings::screenW - 80.0f );
+    std::uniform_real_distribution<float> yD( 200.0f, (float)settings::screenH - 80.0f );
 
     for(int i = 0; i < 10; i++)
     {
@@ -78,6 +77,7 @@ void Game::Update()
     }
     elf.SetDirection( dir );
     elf.Update( dTime );
+    if(backGround.IsBoundaryWith( elf.GetHitBox() )) elf.AdjustPos( dTime );
 
     //
     for( Bullet& b : bullets )
@@ -129,8 +129,9 @@ void Game::Update()
         }
 
         poo.Update( dTime );
-
         const auto poo_hitbox = poo.GetHitBox();
+        if(backGround.IsBoundaryWith( poo_hitbox )) poo.AdjustPos( dTime );
+
         if( !elf.IsInvisible() && elf.GetHitBox().IsOverLapping( poo.GetHitBox() ) )
         {
             elf.ApplyEffect();
@@ -166,7 +167,7 @@ void Game::Update()
 void Game::Draw()
 {
     ClearBackground(RAYWHITE);
-    backGroud.Draw();
+    backGround.Draw();
     for( Poo& poo : poos )
     {
         poo.Draw();

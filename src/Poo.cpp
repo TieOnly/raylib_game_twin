@@ -28,6 +28,10 @@ void Poo::SetDirection( const Vec2& dir )
     else
         vel = { 0.0f, 0.0f };
 }
+void Poo::AdjustPos( float dTime )
+{
+    pos -= vel * dTime;
+}
 void Poo::ApplyDamege( const float damege )
 {
     hp -= (int)damege;

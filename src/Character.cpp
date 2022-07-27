@@ -55,6 +55,10 @@ void Character::SetDirection( const Vec2& dir )
     }
     vel = dir * speed;
 }
+void Character::AdjustPos(float dTime)
+{
+    pos -= vel * dTime;
+}
 void Character::ApplyEffect()
 {
     dec.Active();

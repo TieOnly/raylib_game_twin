@@ -39,6 +39,7 @@ private:
 public: 
     Character( const Vec2& pos );
     void SetDirection( const Vec2& dir );
+    void AdjustPos(float dTime);
     void ApplyEffect();
     bool IsInvisible() const;
     void Update( float dTime );

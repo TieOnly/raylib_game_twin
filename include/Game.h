@@ -27,13 +27,12 @@ private:
     const RectI screenRect = rayCpp::GetScreenRect();
     std::mt19937 rng;
 
-    Texture2D groundS;
     Texture2D pooS;
     Texture2D bulletS;
     FontC font;
 
-    BackGround backGroud;
-    Character elf = Character( {100, 100} );
+    BackGround backGround;
+    Character elf = Character( {300, 300} );
     std::vector<Poo> poos;
     std::vector<Bullet> bullets;
 };
