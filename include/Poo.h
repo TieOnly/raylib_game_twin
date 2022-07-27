@@ -15,8 +15,6 @@ private:
     };
 public: 
     Poo( const Texture2D& sprite_in, const Vec2& pos );
-    Poo( const Poo& src );
-    Poo& operator = ( const Poo& src );
     void SetDirection( const Vec2& dir );
     void AdjustPos(float dTime);
     void ApplyDamege( const float damege );
@@ -27,7 +25,7 @@ public:
     void Draw() const;
 
 private:
-    const Texture2D sprite;
+    const Texture2D* sprite;
     Vec2 pos;
     Vec2 vel = { 0.0f, 0.0f };
     static constexpr float speed = 50.0f;

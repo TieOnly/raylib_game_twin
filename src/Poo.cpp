@@ -4,22 +4,10 @@
 
 Poo::Poo( const Texture2D& sprite_in, const Vec2& pos )
     :
-    sprite( sprite_in ),
+    sprite( &sprite_in ),
     pos( pos )
 {
     
-}
-Poo::Poo( const Poo& src )
-    :
-    sprite( src.sprite ),
-    pos( src.pos )
-{}
-Poo& Poo::operator = ( const Poo& src )
-{
-    pos = src.pos;
-    hp = src.hp;
-    effState = src.effState;
-    return *this;
 }
 void Poo::SetDirection( const Vec2& dir )
 {
@@ -92,13 +80,13 @@ void Poo::Draw() const
     switch (effState)
     {
     case Poo::EffectState::Normal:
-        rayCpp::DrawSprite(sprite, draw_pos, RectI{{0, 0}, sprite.width, sprite.height });
+        rayCpp::DrawSprite(*sprite, draw_pos, RectI{{0, 0}, sprite->width, sprite->height });
         break;
     case Poo::EffectState::Hurt:
-        rayCpp::DrawSprite(sprite, draw_pos, RectI{{0, 0}, sprite.width, sprite.height }, RED);
+        rayCpp::DrawSprite(*sprite, draw_pos, RectI{{0, 0}, sprite->width, sprite->height }, RED);
         break;
     case Poo::EffectState::Dying:
-        rayCpp::DrawSprite(sprite, draw_pos, RectI{{0, 0}, sprite.width, sprite.height }, { 255, 255, 255, a });
+        rayCpp::DrawSprite(*sprite, draw_pos, RectI{{0, 0}, sprite->width, sprite->height }, { 255, 255, 255, a });
         break;
     default:
         break;
