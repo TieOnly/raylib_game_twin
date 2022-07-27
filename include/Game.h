@@ -4,6 +4,7 @@
 #include <random>
 #include "raylibCpp.h"
 #include "FrameTime.h"
+#include "BackGround.h"
 #include "Character.h"
 #include "FontC.h"
 #include "Poo.h"
@@ -26,12 +27,13 @@ private:
     const RectI screenRect = rayCpp::GetScreenRect();
     std::mt19937 rng;
 
+    Texture2D groundS;
     Texture2D pooS;
     Texture2D bulletS;
-
-    Character elf = Character( {100, 100} );
     FontC font;
-    std::vector<Poo> poos;
 
+    BackGround backGroud;
+    Character elf = Character( {100, 100} );
+    std::vector<Poo> poos;
     std::vector<Bullet> bullets;
 };

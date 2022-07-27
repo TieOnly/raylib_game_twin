@@ -4,14 +4,14 @@
 Bullet::Bullet( const Texture2D& spite_in, const Vec2& pos, const Vec2& dir )
     :
     bullet_surf( spite_in ),
-    bullet_animation( 0, 0, 24, 24, 4, bullet_surf, 0.08f ),
+    bullet_animation( 0, 0, 60, 60, 5, bullet_surf, 0.16f ),
     pos( pos ),
     vel( dir * speed )
 {}
 Bullet::Bullet( const Bullet& src )
     :
     bullet_surf( src.bullet_surf ),
-    bullet_animation( 0, 0, 24, 24, 4, bullet_surf, 0.08f ),
+    bullet_animation( 0, 0, 60, 60, 5, bullet_surf, 0.16f ),
     pos( src.pos ),
     vel( src.vel )
 {}

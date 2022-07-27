@@ -13,7 +13,6 @@ private:
         Hurt,
         Normal
     };
-
 public: 
     Poo( const Texture2D& sprite_in, const Vec2& pos );
     Poo( const Poo& src );
@@ -30,7 +29,7 @@ private:
     const Texture2D sprite;
     Vec2 pos;
     Vec2 vel = { 0.0f, 0.0f };
-    static constexpr float speed = 110.0f;
+    static constexpr float speed = 50.0f;
     Vec2 draw_offset = { -16.0f, -20.0f };
     static constexpr int hwHitBox = 12;
     static constexpr int hhHitBox = 6;

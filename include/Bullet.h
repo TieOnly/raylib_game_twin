@@ -18,7 +18,7 @@ private:
     Animation bullet_animation;
     Vec2 pos;
     Vec2 vel = { 0.0f, 0.0f };
-    static constexpr float speed = 200.0f;
+    static constexpr float speed = 100.0f;
     static constexpr Vec2 draw_offset = { -12.0f, -12.0f };
     static constexpr float hwHitBox = 12.0f;
     static constexpr float hhHitBox = 12.0f;

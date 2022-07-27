@@ -5,15 +5,17 @@
 Game::Game(int fps)
     :
     rng( std::random_device()() ),
+    groundS( LoadTexture("../assets/img/ground.png") ),
     pooS( LoadTexture("../assets/img/poo.png") ),
-    bulletS( LoadTexture("../assets/img/bullet.png") ),
-    font( "../assets/font/fontWhite.png" )
+    bulletS( LoadTexture("../assets/img/bullet2.png") ),
+    font( "../assets/font/fontWhite.png" ),
+    backGroud( groundS, {0.0f, 0.0f} )
 {
     SetTargetFPS(fps);
     std::uniform_real_distribution<float> xD( 0, (float)settings::screenW );
     std::uniform_real_distribution<float> yD( 0, (float)settings::screenH );
 
-    for(int i = 0; i < 20; i++)
+    for(int i = 0; i < 10; i++)
     {
         poos.emplace_back( Poo{ pooS, Vec2{xD( rng ), yD( rng )}} );
     }
@@ -58,19 +60,19 @@ void Game::Update()
     }
 
     Vec2 dir = { 0, 0 };
-    if(IsKeyDown(KEY_UP))
+    if(IsKeyDown(KEY_W))
     {
         dir.y -= 1;
     }
-    if( IsKeyDown(KEY_DOWN) )
+    if( IsKeyDown(KEY_S) )
     {
         dir.y += 1;
     }
-    if( IsKeyDown(KEY_LEFT) )
+    if( IsKeyDown(KEY_A) )
     {
         dir.x -= 1;
     }
-    if( IsKeyDown(KEY_RIGHT) )
+    if( IsKeyDown(KEY_D) )
     {
         dir.x += 1;
     }
@@ -97,7 +99,7 @@ void Game::Update()
                 }
                 const Vec2 delta = poo.GetPos() - other.GetPos();
                 const float lensq = delta.GetLengthSq();
-                if( lensq < 100.0f )
+                if( lensq < 400.0f )
                 {
                     avoiding = true;
                     if( lensq == 0.0f )
@@ -164,6 +166,7 @@ void Game::Update()
 void Game::Draw()
 {
     ClearBackground(RAYWHITE);
+    backGroud.Draw();
     for( Poo& poo : poos )
     {
         poo.Draw();

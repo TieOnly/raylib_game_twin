@@ -112,6 +112,10 @@ public:
         }
         return *this;
     }
+    Vector2 rayVec() const
+    {
+        return Vector2{ (float)x, (float)y };
+    }
 };
 
 typedef Vec2_<int> Vei2;
