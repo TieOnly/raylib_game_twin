@@ -2,6 +2,7 @@
 #include "raylibCpp.h"
 #include <vector>
 #include "Animation.h"
+#include "Codex.h"
 
 class Poo
 {
@@ -14,7 +15,7 @@ private:
         Normal
     };
 public: 
-    Poo( const Texture2D& sprite_in, const Vec2& pos );
+    Poo( const Vec2& pos );
     void SetDirection( const Vec2& dir );
     void AdjustPos(float dTime);
     void ApplyDamege( const float damege );

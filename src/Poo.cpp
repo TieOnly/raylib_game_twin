@@ -2,9 +2,9 @@
 #include "SpriteEffects.h"
 #include <iostream>
 
-Poo::Poo( const Texture2D& sprite_in, const Vec2& pos )
+Poo::Poo( const Vec2& pos )
     :
-    sprite( &sprite_in ),
+    sprite( Codex::Retrieve( "../assets/img/poo.png" ) ),
     pos( pos )
 {
     

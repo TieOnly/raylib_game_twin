@@ -5,7 +5,7 @@
 class Animation
 {
 public:
-    Animation(int x, int y, int width, int height, int count, const Texture2D& sprite, float holdTime);
+    Animation(int x, int y, int width, int height, int count, const Texture2D* sprite, float holdTime);
     void Update( float dTime );
     void Update( float dTime, const Sound& sound, const int nFramePerSound );
     void Advance();

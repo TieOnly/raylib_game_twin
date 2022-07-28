@@ -3,12 +3,12 @@
 
 FontC::FontC( const std::string& fileName )
     :
-    surf( LoadTexture( fileName.c_str() ) ),
-    glyphWidth( surf.width / colums ),
-    glyphHeight( surf.height / rows )
+    surf( Codex::Retrieve( fileName ) ),
+    glyphWidth( surf->width / colums ),
+    glyphHeight( surf->height / rows )
 {
-    assert( glyphWidth * colums == surf.width );
-    assert( glyphHeight * rows == surf.height );
+    assert( glyphWidth * colums == surf->width );
+    assert( glyphHeight * rows == surf->height );
 }
 RectI FontC::MapGlyphRectI( char c ) const
 {
@@ -35,7 +35,7 @@ void FontC::DrawText( const std::string& text, const Vei2& pos, Color color )
         }
         else if(c >= fisrtChar + 1 && c <= lastChar)
         {
-            rayCpp::DrawSprite( surf, (Vec2)curPos, MapGlyphRectI( c ), color );
+            rayCpp::DrawSprite( *surf, (Vec2)curPos, MapGlyphRectI( c ), color );
         }
         curPos.x += glyphWidth;
     }

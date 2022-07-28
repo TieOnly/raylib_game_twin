@@ -1,10 +1,10 @@
 #include "Bullet.h"
 #include "SpriteEffects.h"
 
-Bullet::Bullet( const Texture2D& spite_in, const Vec2& pos, const Vec2& dir )
+Bullet::Bullet( const Vec2& pos, const Vec2& dir )
     :
-    bullet_surf( &spite_in ),
-    bullet_animation( 0, 0, 60, 60, 5, *bullet_surf, 0.16f ),
+    bullet_surf( Codex::Retrieve( "../assets/img/bullet2.png" ) ),
+    bullet_animation( 0, 0, 60, 60, 5, bullet_surf, 0.16f ),
     pos( pos ),
     vel( dir * speed )
 {}

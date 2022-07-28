@@ -1,8 +1,8 @@
 #include "Animation.h"
 
-Animation::Animation(int x, int y, int width, int height, int count, const Texture2D& sprite, float holdTime)
+Animation::Animation(int x, int y, int width, int height, int count, const Texture2D* sprite, float holdTime)
     :
-    sprite( &sprite ),
+    sprite( sprite ),
     holdTime( holdTime )
 {
     for(int i = 0; i < count; i++)

@@ -5,8 +5,6 @@
 Game::Game(int fps)
     :
     rng( std::random_device()() ),
-    pooS( LoadTexture("../assets/img/poo.png") ),
-    bulletS( LoadTexture("../assets/img/bullet2.png") ),
     font( "../assets/font/fontWhite.png" ),
     backGround( {0.0f, 0.0f}, settings::lay1, settings::lay2 )
 {
@@ -14,9 +12,9 @@ Game::Game(int fps)
     std::uniform_real_distribution<float> xD( 80.0f, (float)settings::screenW - 80.0f );
     std::uniform_real_distribution<float> yD( 200.0f, (float)settings::screenH - 80.0f );
 
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 100; i++)
     {
-        poos.emplace_back( Poo{ pooS, Vec2{xD( rng ), yD( rng )}} );
+        poos.emplace_back( Poo{ Vec2{xD( rng ), yD( rng )}} );
     }
 
 }
@@ -55,7 +53,7 @@ void Game::Update()
         //const location spawn
         const Vec2 loca_offset = {0.0f, -20.0f};
 
-        bullets.emplace_back( Bullet{ bulletS, elf.GetPos() + loca_offset, dir } );
+        bullets.emplace_back( Bullet{ elf.GetPos() + loca_offset, dir } );
     }
 
     Vec2 dir = { 0, 0 };

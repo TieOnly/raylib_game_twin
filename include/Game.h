@@ -27,8 +27,6 @@ private:
     const RectI screenRect = rayCpp::GetScreenRect();
     std::mt19937 rng;
 
-    Texture2D pooS;
-    Texture2D bulletS;
     FontC font;
 
     BackGround backGround;

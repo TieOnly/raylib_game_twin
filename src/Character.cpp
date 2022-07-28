@@ -3,7 +3,7 @@
 
 Character::Character( const Vec2& pos )
     :
-    sprite( LoadTexture("../assets/img/elf.png") ),
+    sprite( Codex::Retrieve( "../assets/img/elf.png" ) ),
     pos( pos ),
     stepSound( LoadSound("../assets/audio/step.mp3") )
 {

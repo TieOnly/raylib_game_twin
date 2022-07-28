@@ -2,6 +2,7 @@
 #include "raylibCpp.h"
 #include "Rect.h"
 #include <string>
+#include "Codex.h"
 
 class FontC
 {
@@ -13,7 +14,7 @@ private:
     RectI MapGlyphRectI( char c ) const;
 
 private:
-    Texture2D surf;
+    const Texture2D* surf;
 
     int glyphWidth; 
     int glyphHeight;

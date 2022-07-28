@@ -2,6 +2,7 @@
 #include "raylibCpp.h"
 #include <vector>
 #include "Animation.h"
+#include "Codex.h"
 
 class Character
 {
@@ -48,7 +49,7 @@ public:
     RectI GetHitBox() const;
 
 private:
-    const Texture2D sprite;
+    const Texture2D* sprite;
     Vec2 pos;
     Vec2 vel = { 0.0f, 0.0f };
     static constexpr float speed = 180.0f;

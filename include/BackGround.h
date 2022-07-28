@@ -3,14 +3,15 @@
 #include "Rect.h"
 #include "Vec2.h"
 #include <string>
+#include "Codex.h"
 #include <iostream>
 class BackGround
 {
 public:
     BackGround(const Vec2 origin_in, const std::string& map1, const std::string& map2)
         :
-        lay1( LoadTexture("../assets/img/ground.png") ),
-        lay2( LoadTexture("../assets/img/wall.png") ),
+        lay1( Codex::Retrieve( "../assets/img/ground.png" ) ),
+        lay2( Codex::Retrieve( "../assets/img/wall.png" ) ),
         origin( origin_in )
     {
         tiles.reserve( gridDimens );
@@ -54,7 +55,7 @@ public:
                 const int tile = GetTileAt( iX, iY );
                 if( tile > 0 )
                 {
-                    Rectangle srcRect = Rectangle{ 0.0f, 0.0f, (float)lay2.width, (float)lay2.height};
+                    Rectangle srcRect = Rectangle{ 0.0f, 0.0f, (float)lay2->width, (float)lay2->height};
                     Rectangle destRect = Rectangle{ 
                         origin.x + float(iX * tileW), 
                         origin.y + float(iY * tileH), 
@@ -62,11 +63,11 @@ public:
                         (float)tileH
                         };
 
-                    DrawTexturePro(lay2, srcRect, destRect, {0.0f, 0.0f}, 0.0f, WHITE);
+                    DrawTexturePro(*lay2, srcRect, destRect, {0.0f, 0.0f}, 0.0f, WHITE);
                 }
                 else
                 {
-                    Rectangle srcRect = Rectangle{ 0.0f, 0.0f, (float)lay1.width, (float)lay1.height};
+                    Rectangle srcRect = Rectangle{ 0.0f, 0.0f, (float)lay1->width, (float)lay1->height};
                     Rectangle destRect = Rectangle{ 
                         origin.x + float(iX * tileW), 
                         origin.y + float(iY * tileH), 
@@ -74,7 +75,7 @@ public:
                         (float)tileH
                         };
 
-                    DrawTexturePro(lay1, srcRect, destRect, {0.0f, 0.0f}, 0.0f, WHITE);
+                    DrawTexturePro(*lay1, srcRect, destRect, {0.0f, 0.0f}, 0.0f, WHITE);
                 }
             }
         }
@@ -84,8 +85,8 @@ public:
         return tiles[y * gridWidth + x];
     }
 private:
-    Texture2D lay1;
-    Texture2D lay2;
+    const Texture2D* lay1;
+    const Texture2D* lay2;
     Vec2 origin;    //topleft
     static constexpr int gridWidth = 10;
     static constexpr int gridHeight = 10;

@@ -1,11 +1,12 @@
 #pragma once
 #include "raylibCpp.h"
 #include "Animation.h"
+#include "Codex.h"
 
 class Bullet
 {
 public:
-    Bullet( const Texture2D& spite_in, const Vec2& pos, const Vec2& dir);
+    Bullet( const Vec2& pos, const Vec2& dir);
     void Update( float dTime );
     void Draw() const;
     const Vec2& GetPos() const;
